@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Documents</h2>
+    <a href="{{ url_for('documents.upload_document') }}" class="btn btn-primary">Upload Document</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Document Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Upload Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in documents %}
+            <tr>
+                <td>{{ doc.Key }}</td>
+                <td>{{ doc.get('Type', 'N/A') }}</td>
+                <td>{{ (doc.Size / 1024)|round(1) }} KB</td>
+                <td>{{ doc.LastModified.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('documents.download_document', key=doc.Key) }}" 
+                           class="btn btn-sm btn-primary">Download</a>
+                        <form action="{{ url_for('documents.delete_document', key=doc.Key) }}" 
+                              method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" 
+                                    onclick="return confirm('Are you sure you want to delete this document?')">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

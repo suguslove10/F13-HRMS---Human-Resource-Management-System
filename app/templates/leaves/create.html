@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>New Leave Request</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="employeeId" class="form-label">Employee ID</label>
+                <input type="text" class="form-control" id="employeeId" name="employeeId" required>
+            </div>
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" required>
+            </div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" required>
+            </div>
+            <div class="mb-3">
+                <label for="leaveType" class="form-label">Leave Type</label>
+                <select class="form-control" id="leaveType" name="leaveType" required>
+                    <option value="ANNUAL">Annual Leave</option>
+                    <option value="SICK">Sick Leave</option>
+                    <option value="PERSONAL">Personal Leave</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="reason" class="form-label">Reason</label>
+                <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+            <a href="{{ url_for('leaves.list_leaves') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Welcome, {{ session['user']['firstName'] }}!</h1>
+        </div>
+    </div>
+
+    {% if session['user']['role'] == 'ADMIN' %}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Total Employees</h5>
+                    <h2 class="card-text">{{ stats.total_employees }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Leaves</h5>
+                    <h2 class="card-text">{{ stats.pending_leaves }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Approved Leaves</h5>
+                    <h2 class="card-text">{{ stats.approved_leaves }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Total Documents</h5>
+                    <h2 class="card-text">{{ stats.total_documents }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Recent Leave Requests</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Type</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for leave in recent_leaves %}
+                                <tr>
+                                    <td>{{ leave.employeeName }}</td>
+                                    <td>{{ leave.leaveType }}</td>
+                                    <td>{{ leave.startDate }}</td>
+                                    <td>{{ leave.endDate }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if leave.status == 'APPROVED' 
+                                                                else 'warning' if leave.status == 'PENDING' 
+                                                                else 'danger' }}">
+                                            {{ leave.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if leave.status == 'PENDING' %}
+                                        <form action="{{ url_for('leaves.update_status', leave_id=leave.leaveId) }}" 
+                                              method="POST" style="display: inline;">
+                                            <button type="submit" name="action" value="approve" 
+                                                    class="btn btn-sm btn-success">Approve</button>
+                                            <button type="submit" name="action" value="reject" 
+                                                    class="btn btn-sm btn-danger">Reject</button>
+                                        </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% if not recent_leaves %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No leave requests found</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">My Leave Requests</h5>
+                    <a href="{{ url_for('leaves.create_leave') }}" class="btn btn-primary">Request Leave</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for leave in recent_leaves %}
+                                {% if leave.employeeId == session['user']['userId'] %}
+                                <tr>
+                                    <td>{{ leave.leaveType }}</td>
+                                    <td>{{ leave.startDate }}</td>
+                                    <td>{{ leave.endDate }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if leave.status == 'APPROVED' 
+                                                                else 'warning' if leave.status == 'PENDING' 
+                                                                else 'danger' }}">
+                                            {{ leave.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                                {% if not recent_leaves %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No leave requests found</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

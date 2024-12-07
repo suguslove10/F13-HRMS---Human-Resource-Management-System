@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Upload Document</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="file" class="form-label">Select File</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description (Optional)</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="document_type" class="form-label">Document Type</label>
+                <select class="form-control" id="document_type" name="document_type" required>
+                    <option value="">Select document type...</option>
+                    <option value="CONTRACT">Contract</option>
+                    <option value="POLICY">Policy Document</option>
+                    <option value="REPORT">Report</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Document</button>
+            <a href="{{ url_for('documents.list_documents') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

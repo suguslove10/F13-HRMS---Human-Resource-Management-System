@@ -1,0 +1,30 @@
+/* Custom styles */
+.navbar {
+    margin-bottom: 2rem;
+}
+
+.card {
+    margin-bottom: 2rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.table-responsive {
+    margin-bottom: 2rem;
+}
+
+.badge {
+    padding: 0.5em 1em;
+}
+
+.btn {
+    margin-right: 0.5rem;
+}
+
+.form-control {
+    margin-bottom: 1rem;
+}
+
+.alert {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
