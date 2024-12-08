@@ -24,4 +24,4 @@ if __name__ == '__main__':
     
     app.run(debug=True)
     #To run in EC2
-    #app.run(host='0.0.0.0' , port=5000, debug=true)
+    #app.run(host='0.0.0.0' , port=5000, debug=True)
