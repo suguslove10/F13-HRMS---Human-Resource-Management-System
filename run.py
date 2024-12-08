@@ -23,3 +23,5 @@ if __name__ == '__main__':
     print(f"{Fore.GREEN}========================================\n{Style.RESET_ALL}")
     
     app.run(debug=True)
+    #To run in EC2
+    #app.run(host='0.0.0.0' , port=5000, debug=true)
